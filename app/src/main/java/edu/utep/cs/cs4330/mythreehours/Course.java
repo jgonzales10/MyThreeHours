@@ -8,16 +8,24 @@ public class Course {
     //Start date (Pending Upgraded Version)
     //End date
 
-    public Course(){
+    protected Course(){
         name = null;
         desiredWeekHours = 0;
         currWeekHours = 0;
-
+        totalHours = 0;
     }
-    public Course(String name, int desiredHours, double currHours, double totalHours ){
+    protected Course(String name, int desiredHours, double currHours, double totalHours ){
         this.name = name;
-        this.currWeekHours = currHours;
         this.desiredWeekHours = desiredHours;
+        this.currWeekHours = currHours;
+        this.totalHours = 0;
+    }
+
+    protected Course(String name, int desiredHours){
+        this.name = name;
+        this.desiredWeekHours = desiredHours;
+        this.currWeekHours = 0;
+        this.totalHours = 0;
     }
 
     /*************SETTERS*******************/
@@ -72,4 +80,10 @@ public class Course {
         this.totalHours += numHours;
     }
 
+    public boolean isEmpty(){
+        if(this.name == null && this.desiredWeekHours == 0){
+            return true;
+        }
+        return false;
+    }
 }
