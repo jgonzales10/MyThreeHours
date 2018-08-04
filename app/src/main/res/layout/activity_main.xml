@@ -10,16 +10,16 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="100dp"
+        android:paddingBottom="5dp"
         android:text="@string/mythreehours"
-        android:textSize="50sp"
+        android:textSize="35sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/progressTitleView"
-        android:textSize="40sp"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -27,7 +27,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="This Week's Progress:"
+        android:text="@string/this_week_s_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -41,7 +41,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="Add Class"
+        android:text="@string/add_class"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/progressTitleView" />
@@ -49,7 +49,7 @@
     <ListView
         android:id="@+id/classListView"
         android:layout_width="368dp"
-        android:layout_height="449dp"
+        android:layout_height="350dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
