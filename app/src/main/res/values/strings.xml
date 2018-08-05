@@ -4,4 +4,6 @@
     <string name="this_week_s_progress">This Week\'s Progress:</string>
     <string name="add_class">Add Class</string>
     <string name="add_new_class">Add New Class!</string>
+    <string name="addTimeButton">(+)15min</string>
+    <string name="subtractTimeButton">(-)15min</string>
 </resources>

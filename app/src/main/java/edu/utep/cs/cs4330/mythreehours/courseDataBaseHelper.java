@@ -106,4 +106,11 @@ public class courseDataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
     }
+
+    public void deleteNameId(int id, String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + COL_1 +
+                " = '" + id + "'" + " AND " + COL_2 + " = '" + name + "'";
+        db.execSQL(query);
+    }
 }

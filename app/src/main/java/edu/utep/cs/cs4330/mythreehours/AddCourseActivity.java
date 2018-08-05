@@ -1,5 +1,6 @@
 package edu.utep.cs.cs4330.mythreehours;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddCourse extends AppCompatActivity {
+public class AddCourseActivity extends AppCompatActivity {
     //Database
     private courseDataBaseHelper myDb;
 
@@ -36,14 +37,16 @@ public class AddCourse extends AppCompatActivity {
 
         className = editNameText.getText().toString();
         String hoursValue = editDesiredHours.getText().toString();
-        numDesiredHours = Integer.parseInt(hoursValue);
 
         if (className.isEmpty() || hoursValue.isEmpty()) {//checks that URL is not blank
             toastMessage("Please enter values in both fields!");
         }
         else{
+            numDesiredHours = Integer.parseInt(hoursValue);
             course = new Course(className,numDesiredHours);
             addData(course.getName(),course.getDesiredWeekHours(),course.getCurrWeekHours(),course.getTotalHours());
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
         }
     }
     public void addData(String name, int numDesiredHours, double currWeekHours, double numTotalHours){
