@@ -1,6 +1,5 @@
 package edu.utep.cs.cs4330.mythreehours;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
     private courseDataBaseHelper myDb;
     private CustomAdapter customAdapter;
     private ProgressBar totalProgressBar;
+    private double totalCompletedHours;
+    private int totalDesiredHours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        totalCompletedHours = 0;
+        totalDesiredHours = 0;
         myDb = new courseDataBaseHelper(this);
         arrayList = new ArrayList();
 
@@ -47,9 +49,17 @@ public class MainActivity extends AppCompatActivity {
         populateListView();
         registerForContextMenu(listView);
 
-        totalProgressBar.setProgress(25);
+        //totalProgressBar.setProgress(25);
 
-
+        //updateProgressBar();
+        new Thread(()->{
+            while(true){
+                this.runOnUiThread(this::updateProgressBar);
+                try{
+                    Thread.sleep(1000);
+                } catch (InterruptedException e){}
+            }
+        }).start();
 
     }
 
@@ -68,10 +78,24 @@ public class MainActivity extends AppCompatActivity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu,v,menuInfo);
         menu.add("REMOVE");
+        menu.add("EDIT");
         // or use XML menu, e.g.,
         // getMenuInflater().inflate(R.menu.context_menu, menu);
     }
 
+    public void updateProgressBar(){
+        Cursor data = myDb.getData();
+        totalDesiredHours = 0;
+        totalCompletedHours=0;
+        while (data.moveToNext()) {
+            totalDesiredHours += data.getInt(2);
+            totalCompletedHours += data.getDouble(3);
+            int TotalProgress = (int)((totalCompletedHours / totalDesiredHours)*100);
+            totalProgressBar.setProgress(TotalProgress);
+
+        }
+        data.close();
+    }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -91,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemID > -1) {
                 myDb.deleteNameId(itemID,name);
             }
+            data1.close();
 
             customAdapter.remove(customAdapter.getItem(info.position));
             ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
@@ -100,8 +125,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
-
-
     }
 
     /***********************SQLite Implementations*****************************************/
@@ -114,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         while (data.moveToNext()) {
             arrayList.add(data.getString(1)+":"+data.getInt(2)+":"+data.getDouble(3)+":"+data.getDouble(4));
         }
+        data.close();
 
         /********FOR WHENEVER I IMPLEMENT AN EDIT ACTIVITY*************************
 
