@@ -2,6 +2,8 @@ package edu.utep.cs.cs4330.mythreehours;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,12 +15,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView progresTextView;
     private ListView listView;
     private Button addClassButton;
     private Button refreshButton;
@@ -28,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar totalProgressBar;
     private double totalCompletedHours;
     private int totalDesiredHours;
+    boolean blinkProgress;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         myDb = new courseDataBaseHelper(this);
         arrayList = new ArrayList();
 
+        progresTextView = findViewById(R.id.progressTextView);
         listView = findViewById(R.id.classListView);
         refreshButton = findViewById(R.id.refreshButton);
         refreshButton.setVisibility(View.GONE);
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             while(true){
                 this.runOnUiThread(this::updateProgressBar);
                 try{
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e){}
             }
         }).start();
@@ -91,7 +99,32 @@ public class MainActivity extends AppCompatActivity {
             totalDesiredHours += data.getInt(2);
             totalCompletedHours += data.getDouble(3);
             int TotalProgress = (int)((totalCompletedHours / totalDesiredHours)*100);
-            totalProgressBar.setProgress(TotalProgress);
+            if(TotalProgress >= 100){
+                totalProgressBar.setScaleY(8);
+                if(blinkProgress) {
+                    progresTextView.setText("100%");
+                    totalProgressBar.getProgressDrawable().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN);
+                    blinkProgress = false;
+                }
+                else{
+                    totalProgressBar.getProgressDrawable().setColorFilter(Color.parseColor("#63D1FE"), PorterDuff.Mode.SRC_IN);
+                    blinkProgress = true;
+                }
+                totalProgressBar.setProgress(TotalProgress);
+            }
+            else if(TotalProgress > 50){
+                totalProgressBar.setScaleY(6);
+                totalProgressBar.setProgress(TotalProgress);
+                totalProgressBar.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+
+            }
+            else{
+                totalProgressBar.setScaleY(4);
+                totalProgressBar.setProgress(TotalProgress);
+                totalProgressBar.getProgressDrawable().setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_IN);
+
+            }
+            progresTextView.setText(TotalProgress + "%");
 
         }
         data.close();
@@ -120,6 +153,41 @@ public class MainActivity extends AppCompatActivity {
             customAdapter.remove(customAdapter.getItem(info.position));
             ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             listView.deferNotifyDataSetChanged();
+        }
+        else if(item.getTitle() == "EDIT"){
+            String[] parts = customAdapter.getItem(index).toString().split(":");
+            String name = parts[0];
+            Cursor data1 = myDb.getItemID(name);
+
+            int itemID = -1;
+            int courseDesired = 0;
+            double courseCurrWeek = 0;
+            double courseTotal = 0;
+            String courseId = null;
+            String website = null;
+            String description = null;
+
+            while (data1.moveToNext()) {
+                itemID = data1.getInt(0);
+                courseDesired = data1.getInt(2);
+                courseCurrWeek = data1.getDouble(3);
+                courseTotal = data1.getDouble(4);
+                courseId = data1.getString(5);
+                website = data1.getString(6);
+                description = data1.getString(7);
+            }
+            if (itemID > -1) {
+                Intent editItemIntent = new Intent(MainActivity.this, editCourseActivity.class);
+                editItemIntent.putExtra("id", itemID);
+                editItemIntent.putExtra("name", name);
+                editItemIntent.putExtra("courseDesired", courseDesired);
+                editItemIntent.putExtra("courseCurrWeek", courseCurrWeek);
+                editItemIntent.putExtra("courseTotal", courseTotal);
+                editItemIntent.putExtra("courseId", courseId);
+                editItemIntent.putExtra("website", website);
+                editItemIntent.putExtra("description", description);
+                startActivity(editItemIntent);
+            }
         }
         else{
             return false;

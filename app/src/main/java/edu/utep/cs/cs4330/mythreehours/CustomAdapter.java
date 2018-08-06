@@ -1,6 +1,8 @@
 package edu.utep.cs.cs4330.mythreehours;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +75,7 @@ public class CustomAdapter extends ArrayAdapter {
             courseList.set(position, newObject);
             myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
             notifyDataSetChanged();
-            toastMessage("ADDED time! " + tempCurrHours + "/" + tempDesiredHours + "hours left!");
+
         });
         subtractButton.setOnClickListener(v -> {
             String tempObject = (String) courseList.get(position);
@@ -89,7 +91,7 @@ public class CustomAdapter extends ArrayAdapter {
             courseList.set(position, newObject);
             myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
             notifyDataSetChanged();
-            toastMessage("SUBTRACTED time.. " + tempCurrHours + "/" + tempDesiredHours + "hours left!");
+
         });
 
         updateList();
@@ -103,6 +105,12 @@ public class CustomAdapter extends ArrayAdapter {
 
             progress = (int)((currHours / desiredHours)*100);
             //progressBar.setProgress(progress);
+            if(progress >= 100){
+                progressBar.getProgressDrawable().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN);
+            }
+            else{
+                progressBar.getProgressDrawable().setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_IN);
+            }
             progressBar.setProgress(progress);
         }
     }
