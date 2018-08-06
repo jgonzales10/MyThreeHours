@@ -4,10 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +27,6 @@ public class CustomAdapter extends ArrayAdapter {
     private double totalHours;
     private int progress;
     private View listItem;
-    private View view;
-    private int position;
     private String[] tempDescription;
 
     public CustomAdapter(Context context, ArrayList list, courseDataBaseHelper db) {
@@ -48,7 +44,6 @@ public class CustomAdapter extends ArrayAdapter {
             listItem = LayoutInflater.from(this.context).inflate(R.layout.custom_layout,parent,false);
         }
         String courseObject = (String) courseList.get(position);
-        //toastMessage(courseObject);
         String[] courseDescription = courseObject.split(":");
         cName = courseDescription[0];
         desiredHours = Integer.parseInt(courseDescription[1]);
@@ -61,46 +56,40 @@ public class CustomAdapter extends ArrayAdapter {
         subtractButton = listItem.findViewById(R.id.subtractButton);
         progressBar = listItem.findViewById(R.id.individualProgressBar);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
+        /****************ADD & SUBTRACT TIME BUTTONS*******************/
 
-            @Override
-            public void onClick(View v) {
-                // String.valueOf(getItem(position))
-                toastMessage("Adding 15 minutes of study time!");
-                String tempObject = (String) courseList.get(position);
-                tempDescription = tempObject.split(":");
-                String tempName = tempDescription[0];
-                int tempDesiredHours = Integer.parseInt(tempDescription[1]);
-                double tempCurrHours = Double.parseDouble(tempDescription[2]);
-                double tempTotalHours = Double.parseDouble(tempDescription[3]);
-                tempCurrHours += .25;
-                tempTotalHours += .25;
+        addButton.setOnClickListener(v -> {
+            // String.valueOf(getItem(position))
+            String tempObject = (String) courseList.get(position);
+            tempDescription = tempObject.split(":");
+            String tempName = tempDescription[0];
+            int tempDesiredHours = Integer.parseInt(tempDescription[1]);
+            double tempCurrHours = Double.parseDouble(tempDescription[2]);
+            double tempTotalHours = Double.parseDouble(tempDescription[3]);
+            tempCurrHours += .25;
+            tempTotalHours += .25;
 
-                String newObject = tempName +":"+ tempDesiredHours +":"+ tempCurrHours +":"+ tempTotalHours;
-                courseList.set(position, newObject);
-                myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
-                notifyDataSetChanged();
-            }//notifyDataSetChanged();
+            String newObject = tempName +":"+ tempDesiredHours +":"+ tempCurrHours +":"+ tempTotalHours;
+            courseList.set(position, newObject);
+            myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
+            notifyDataSetChanged();
+            toastMessage("ADDED time! " + tempCurrHours + "/" + tempDesiredHours + "hours left!");
         });
-        subtractButton.setOnClickListener(new View.OnClickListener() {
+        subtractButton.setOnClickListener(v -> {
+            String tempObject = (String) courseList.get(position);
+            tempDescription = tempObject.split(":");
+            String tempName = tempDescription[0];
+            int tempDesiredHours = Integer.parseInt(tempDescription[1]);
+            double tempCurrHours = Double.parseDouble(tempDescription[2]);
+            double tempTotalHours = Double.parseDouble(tempDescription[3]);
+            tempCurrHours -= .25;
+            tempTotalHours -= .25;
 
-            @Override
-            public void onClick(View v) {
-                toastMessage("Subtracting 15 minutes of study time!");
-                String tempObject = (String) courseList.get(position);
-                tempDescription = tempObject.split(":");
-                String tempName = tempDescription[0];
-                int tempDesiredHours = Integer.parseInt(tempDescription[1]);
-                double tempCurrHours = Double.parseDouble(tempDescription[2]);
-                double tempTotalHours = Double.parseDouble(tempDescription[3]);
-                tempCurrHours -= .25;
-                tempTotalHours -= .25;
-
-                String newObject = tempName +":"+ tempDesiredHours +":"+ tempCurrHours +":"+ tempTotalHours;
-                courseList.set(position, newObject);
-                myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
-                notifyDataSetChanged();
-            }
+            String newObject = tempName +":"+ tempDesiredHours +":"+ tempCurrHours +":"+ tempTotalHours;
+            courseList.set(position, newObject);
+            myDb.updateData(tempName, tempDesiredHours, tempCurrHours, tempTotalHours);
+            notifyDataSetChanged();
+            toastMessage("SUBTRACTED time.. " + tempCurrHours + "/" + tempDesiredHours + "hours left!");
         });
 
         updateList();

@@ -44,13 +44,16 @@ public class AddCourseActivity extends AppCompatActivity {
         else{
             numDesiredHours = Integer.parseInt(hoursValue);
             course = new Course(className,numDesiredHours);
-            addData(course.getName(),course.getDesiredWeekHours(),course.getCurrWeekHours(),course.getTotalHours());
+            addData(course.getName(),course.getDesiredWeekHours(),course.getCurrWeekHours(),
+                    course.getTotalHours(), course.getCourseID(), course.getCourseWebsite(),course.getDescription());
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         }
     }
-    public void addData(String name, int numDesiredHours, double currWeekHours, double numTotalHours){
-        boolean insertData = myDb.addData(name, numDesiredHours,currWeekHours,numTotalHours);
+    public void addData(String name, int numDesiredHours, double currWeekHours, double numTotalHours,
+                        String courseId, String courseWebsite, String description){
+        boolean insertData = myDb.addData(name, numDesiredHours,currWeekHours,numTotalHours,
+                courseId,courseWebsite,description);
         if (insertData) {
             toastMessage("Data Successfully Inserted!");
         } else {

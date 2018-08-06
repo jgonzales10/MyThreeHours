@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
         }
         data.close();
 
-        /********FOR WHENEVER I IMPLEMENT AN EDIT ACTIVITY*************************
-
          listView.setOnItemClickListener((adapterView, view, i, l) -> {
             String[] parts = adapterView.getItemAtPosition(i).toString().split(":");
             String name = parts[0];
@@ -150,29 +148,35 @@ public class MainActivity extends AppCompatActivity {
             int courseDesired = 0;
             double courseCurrWeek = 0;
             double courseTotal = 0;
-            String category = null;
+            String courseId = null;
+            String website = null;
+            String description = null;
 
             while (data1.moveToNext()) {
                 itemID = data1.getInt(0);
                 courseDesired = data1.getInt(2);
                 courseCurrWeek = data1.getDouble(3);
                 courseTotal = data1.getDouble(4);
+                courseId = data1.getString(5);
+                website = data1.getString(6);
+                description = data1.getString(7);
             }
             if (itemID > -1) {
-                Intent editItemIntent = new Intent(MainActivity.this, SecondActivity.class);
+                Intent editItemIntent = new Intent(MainActivity.this, editCourseActivity.class);
                 editItemIntent.putExtra("id", itemID);
                 editItemIntent.putExtra("name", name);
-                editItemIntent.putExtra("itemInitial",itemInitial);
-                editItemIntent.putExtra("itemCurr",itemCurr);
-                editItemIntent.putExtra("url",url);
-                editItemIntent.putExtra("category",category);
+                editItemIntent.putExtra("courseDesired",courseDesired);
+                editItemIntent.putExtra("courseCurrWeek",courseCurrWeek);
+                editItemIntent.putExtra("courseTotal",courseTotal);
+                editItemIntent.putExtra("courseId",courseId);
+                editItemIntent.putExtra("website",website);
+                editItemIntent.putExtra("description",description);
                 startActivity(editItemIntent);
             } else {
                 toastMessage("No ID associated with that name");
             }
 
         });
-         */
     }
     public void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();

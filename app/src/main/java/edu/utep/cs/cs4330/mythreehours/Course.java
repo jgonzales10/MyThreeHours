@@ -5,6 +5,9 @@ public class Course {
     private int desiredWeekHours;
     private double currWeekHours; //can be updated by 15 minute increments (.25 hrs)
     private double totalHours;
+    private String courseID;
+    private String courseWebsite;
+    private String description;
     //Start date (Pending Upgraded Version)
     //End date
 
@@ -14,11 +17,25 @@ public class Course {
         currWeekHours = 0;
         totalHours = 0;
     }
+    protected Course(String name, int desiredHours, double currHours, double totalHours,
+                     String courseID, String courseWebsite, String description){
+        this.name = name;
+        this.desiredWeekHours = desiredHours;
+        this.currWeekHours = currHours;
+        this.totalHours = 0;
+        this.courseID = courseID;
+        this.courseWebsite = courseWebsite;
+        this.description = description;
+    }
+
     protected Course(String name, int desiredHours, double currHours, double totalHours ){
         this.name = name;
         this.desiredWeekHours = desiredHours;
         this.currWeekHours = currHours;
         this.totalHours = 0;
+        this.courseID = null;
+        this.courseWebsite = null;
+        this.description = null;
     }
 
     protected Course(String name, int desiredHours){
@@ -26,6 +43,9 @@ public class Course {
         this.desiredWeekHours = desiredHours;
         this.currWeekHours = 0;
         this.totalHours = 0;
+        this.courseID= null;
+        this.courseWebsite = null;
+        this.description = null;
     }
 
     /*************SETTERS*******************/
@@ -42,6 +62,15 @@ public class Course {
     public void setTotalHours(double totalHours){
         this.totalHours = totalHours;
     }
+    public void setCourseID(String courseID){
+        this.courseID = courseID;
+    }
+    public void setCourseWebsite(String website){
+        this.courseWebsite = website;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
 
     /*************GETTERS******************/
     public String getName(){
@@ -56,7 +85,15 @@ public class Course {
     public double getTotalHours(){
         return this.totalHours;
     }
-
+    public String getCourseID(){
+        return this.courseID;
+    }
+    public String getCourseWebsite(){
+        return this.courseWebsite;
+    }
+    public String getDescription(){
+        return this.description;
+    }
     /*************MODIFIERS****************/
     public double numHoursRemaining() {
         if (this.desiredWeekHours >= this.currWeekHours) {
