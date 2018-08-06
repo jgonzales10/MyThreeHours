@@ -51,22 +51,7 @@ public class courseDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
-
-    public boolean addData(String name, int desiredWeekHours, double currWeekHours, double totalHours) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, name);
-        contentValues.put(COL_3, desiredWeekHours);
-        contentValues.put(COL_4, currWeekHours);
-        contentValues.put(COL_5, totalHours);
-
-        long result = db.insert(TABLE_NAME, null, contentValues);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    
     public boolean addData(String name, int desiredWeekHours, double currWeekHours, double totalHours,
                            String courseId, String website, String description) {
         SQLiteDatabase db = this.getWritableDatabase();

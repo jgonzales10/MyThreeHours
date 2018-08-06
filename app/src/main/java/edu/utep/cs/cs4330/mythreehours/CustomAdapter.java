@@ -129,35 +129,4 @@ public class CustomAdapter extends ArrayAdapter {
         return courseList.get(position);
     }
 
-
-    /*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.custom_layout,null);
-
-        TextView courseNameTextView = convertView.findViewById(R.id.courseNameTextView);
-        Button addButton = convertView.findViewById(R.id.addButton);
-        Button subtractButton = convertView.findViewById(R.id.subtractButton);
-        ProgressBar progressBar = convertView.findViewById(R.id.individualProgressBar);
-        courseNameTextView.setText("TEST");
-        progressBar.setProgress(50);
-
-        return null;
-    }
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-    */
 }

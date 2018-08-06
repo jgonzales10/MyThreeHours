@@ -108,19 +108,9 @@ public class Course {
         this.currWeekHours++;
         this.totalHours++;
     }
-    public void addFifteenMins(){
-        this.currWeekHours += .25;
-        this.totalHours += .25;
-    }
     public void addWholeHours(int numHours) {
         this.currWeekHours += numHours;
         this.totalHours += numHours;
     }
 
-    public boolean isEmpty(){
-        if(this.name == null && this.desiredWeekHours == 0){
-            return true;
-        }
-        return false;
-    }
 }

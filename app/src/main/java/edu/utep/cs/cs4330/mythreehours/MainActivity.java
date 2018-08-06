@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu,v,menuInfo);
-        menu.add("REMOVE");
         menu.add("EDIT");
+        menu.add("REMOVE");
         // or use XML menu, e.g.,
         // getMenuInflater().inflate(R.menu.context_menu, menu);
     }
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 description = data1.getString(7);
             }
             if (itemID > -1) {
-                Intent editItemIntent = new Intent(MainActivity.this, editCourseActivity.class);
+                Intent editItemIntent = new Intent(MainActivity.this, GraphActivity.class);
                 editItemIntent.putExtra("id", itemID);
                 editItemIntent.putExtra("name", name);
                 editItemIntent.putExtra("courseDesired",courseDesired);
